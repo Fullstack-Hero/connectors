@@ -6,6 +6,7 @@ import (
 
 	"github.com/amp-labs/connectors"
 	"github.com/amp-labs/connectors/common"
+	"github.com/amp-labs/connectors/test/utils/mockutils"
 	"github.com/amp-labs/connectors/test/utils/mockutils/mockcond"
 	"github.com/amp-labs/connectors/test/utils/mockutils/mockserver"
 	"github.com/amp-labs/connectors/test/utils/testroutines"
@@ -357,8 +358,8 @@ func TestListObjectMetadataPardot(t *testing.T) { // nolint:funlen,gocognit,cycl
 			}.Server(),
 			Comparator: func(
 				serverURL string, actual, expected *common.ListObjectMetadataResult,
-			) *testutils.CompareResult {
-				result := testutils.NewCompareResult()
+			) *mockutils.CompareResult {
+				result := mockutils.NewCompareResult()
 				// Usual subset comparison.
 				result.Merge(testroutines.ComparatorSubsetMetadata(serverURL, actual, expected))
 

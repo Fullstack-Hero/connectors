@@ -1,21 +1,20 @@
 package providers
 
-// Microsoft is a connector for Microsoft Graph APIs.
-// It supports many products including:
-//
-//	OneDrive, Outlook, Excel, Edge, Extensions, Sharepoint, OneNote
-//	Notifications, Todos, Teams, Insights, Planner, and Personal Contacts.
+// Microsoft supports products including OneDrive Outlook Excel
+// Edge Extensions Sharepoint OneNote Notifications Todos Teams Insights
+// Planner and Personal Contacts.
 const Microsoft Provider = "microsoft"
 
 func init() {
+	// Microsoft Office 365 Configuration
 	SetInfo(Microsoft, ProviderInfo{
 		DisplayName: "Microsoft",
 		AuthType:    Oauth2,
 		BaseURL:     "https://graph.microsoft.com",
 		Oauth2Opts: &Oauth2Opts{
 			GrantType:                 AuthorizationCode,
-			AuthURL:                   "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
-			TokenURL:                  "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+			AuthURL:                   "https://login.microsoftonline.com/{{.workspace}}/oauth2/v2.0/authorize",
+			TokenURL:                  "https://login.microsoftonline.com/{{.workspace}}/oauth2/v2.0/token",
 			ExplicitScopesRequired:    true,
 			ExplicitWorkspaceRequired: false,
 		},
@@ -30,6 +29,16 @@ func init() {
 			Read:      true,
 			Subscribe: false,
 			Write:     true,
+		},
+		Metadata: &ProviderMetadata{
+			Input: []MetadataItemInput{
+				{
+					Name:         "workspace",
+					DisplayName:  "Tenant ID",
+					DefaultValue: "common",
+					DocsURL:      "https://learn.microsoft.com/en-us/graph/auth-register-app-v2#prerequisites",
+				},
+			},
 		},
 		Media: &Media{
 			DarkMode: &MediaTypeDarkMode{

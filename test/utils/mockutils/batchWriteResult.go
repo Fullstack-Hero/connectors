@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/amp-labs/connectors/common"
-	"github.com/amp-labs/connectors/test/utils/testutils"
 )
 
 // BatchWriteResultComparator provides utility methods for comparing BatchWriteResult structures in tests.
@@ -22,12 +21,10 @@ type batchWriteResultComparator struct{}
 //   - Subset equality for the Data field of each WriteResult (only expected keys/values are checked).
 //   - Normalized equality for Errors, supporting struct/JSON, string, or golang error comparison.
 //   - Exact equality for the Success and RecordId fields.
-func (batchWriteResultComparator) SubsetWriteResults(
-	actual, expected *common.BatchWriteResult,
-) *testutils.CompareResult {
-	result := testutils.NewCompareResult()
+func (batchWriteResultComparator) SubsetWriteResults(actual, expected *common.BatchWriteResult) *CompareResult {
+	result := NewCompareResult()
 	if len(actual.Results) != len(expected.Results) {
-		result.AddDiff("expected %d batch results, got %d", len(expected.Results), len(actual.Results))
+		result.AddDiff(fmt.Sprintf("expected %d batch results, got %d", len(expected.Results), len(actual.Results)))
 		return result
 	}
 
@@ -40,11 +37,11 @@ func (batchWriteResultComparator) SubsetWriteResults(
 		errorComparison := ErrorNormalizedComparator.EachErrorEquals(actualResult.Errors, expectedResult.Errors)
 
 		for _, diff := range dataComparison.Diff {
-			result.AddDiff("Result[%d] %s", i, diff)
+			result.AddDiff(fmt.Sprintf("Result[%d] %s", i, diff))
 		}
 
 		for _, diff := range errorComparison.Diff {
-			result.AddDiff("Result[%d] %s", i, diff)
+			result.AddDiff(fmt.Sprintf("Result[%d] %s", i, diff))
 		}
 
 		result.Assert(fmt.Sprintf("Result[%d].Success", i), expectedResult.Success, actualResult.Success)

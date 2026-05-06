@@ -26,7 +26,7 @@ func init() {
 				Delete: false,
 			},
 			Proxy:     true,
-			Read:      true,
+			Read:      false,
 			Subscribe: false,
 			Write:     false,
 		},
@@ -35,11 +35,7 @@ func init() {
 				Name:         "region",
 				DisplayName:  "Region",
 				DefaultValue: "na",
-				DocsURL:      "https://developer.connectwise.com/Products/ConnectWise_PSA/Developer_Guide",
-			}, {
-				Name:        "clientId",
-				DisplayName: "Client ID",
-				DocsURL:     "https://developer.connectwise.com/ClientID",
+				DocsURL:      "", // TODO link to real docs
 			}},
 		},
 	})

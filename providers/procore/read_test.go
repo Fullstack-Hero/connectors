@@ -20,7 +20,6 @@ func TestRead(t *testing.T) { //nolint:funlen,maintidx
 	operationsResponse := testutils.DataFromFile(t, "operations.json")
 
 	since := time.Date(2024, 10, 1, 0, 0, 0, 0, time.UTC)
-	until := time.Date(2024, 10, 1, 23, 59, 59, 0, time.UTC)
 
 	tests := []testroutines.Read{
 		{
@@ -88,13 +87,12 @@ func TestRead(t *testing.T) { //nolint:funlen,maintidx
 				ObjectName: "company/projects",
 				Fields:     connectors.Fields("id", "name"),
 				Since:      since,
-				Until:      until,
 			},
 			Server: mockserver.Conditional{
 				Setup: mockserver.ContentJSON(),
 				If: mockcond.And{
 					mockcond.Path("/rest/v1.0/companies/" + testCompanyID + "/projects"),
-					mockcond.QueryParam("filters[updated_at]", "2024-10-01T00:00:00Z...2024-10-01T23:59:59Z"),
+					mockcond.QueryParam("filters[updated_at]", "2024-10-01T00:00:00Z..."),
 				},
 				Then: mockserver.Response(http.StatusOK, projectsResponse),
 			}.Server(),
@@ -103,7 +101,7 @@ func TestRead(t *testing.T) { //nolint:funlen,maintidx
 			ExpectedErrs: nil,
 		},
 		{
-			Name: "Link header advances NextPage with the full URL",
+			Name: "Link header advances NextPage",
 			Input: common.ReadParams{
 				ObjectName: "company/projects",
 				Fields:     connectors.Fields("id"),
@@ -115,53 +113,22 @@ func TestRead(t *testing.T) { //nolint:funlen,maintidx
 					mockserver.Response(http.StatusOK, projectsResponse),
 				),
 			}.Server(),
-			Comparator: testroutines.ComparatorPagination,
-			Expected: &common.ReadResult{
-				Rows:     2,
-				NextPage: "https://api.procore.com/rest/v1.0/companies/" + testCompanyID + "/projects?page=2&per_page=100",
-				Done:     false,
-			},
+			Comparator:   testroutines.ComparatorPagination,
+			Expected:     &common.ReadResult{Rows: 2, NextPage: "2", Done: false},
 			ExpectedErrs: nil,
 		},
 		{
-			Name: "NextPage URL is used verbatim for the follow-up request",
+			Name: "NextPage token is forwarded to the page query param",
 			Input: common.ReadParams{
 				ObjectName: "company/projects",
 				Fields:     connectors.Fields("id"),
-				NextPage:   common.NextPageToken(testroutines.URLTestServer + "/rest/v1.0/companies/" + testCompanyID + "/projects?page=3&per_page=100"),
+				NextPage:   "3",
 			},
 			Server: mockserver.Conditional{
 				Setup: mockserver.ContentJSON(),
 				If: mockcond.And{
 					mockcond.Path("/rest/v1.0/companies/" + testCompanyID + "/projects"),
 					mockcond.QueryParam("page", "3"),
-					mockcond.QueryParam("per_page", "100"),
-				},
-				Then: mockserver.Response(http.StatusOK, projectsResponse),
-			}.Server(),
-			Comparator:   testroutines.ComparatorPagination,
-			Expected:     &common.ReadResult{Rows: 2, Done: true},
-			ExpectedErrs: nil,
-		},
-		{
-			Name: "Incremental filter window is preserved across pages",
-			Input: common.ReadParams{
-				ObjectName: "company/projects",
-				Fields:     connectors.Fields("id"),
-				Since:      since,
-				Until:      until,
-				NextPage: common.NextPageToken(testroutines.URLTestServer +
-					"/rest/v1.0/companies/" + testCompanyID + "/projects" +
-					"?filters%5Bupdated_at%5D=2024-10-01T00%3A00%3A00Z...2024-10-01T23%3A59%3A59Z" +
-					"&page=2&per_page=100"),
-			},
-			Server: mockserver.Conditional{
-				Setup: mockserver.ContentJSON(),
-				If: mockcond.And{
-					mockcond.Path("/rest/v1.0/companies/" + testCompanyID + "/projects"),
-					mockcond.QueryParam("page", "2"),
-					mockcond.QueryParam("per_page", "100"),
-					mockcond.QueryParam("filters[updated_at]", "2024-10-01T00:00:00Z...2024-10-01T23:59:59Z"),
 				},
 				Then: mockserver.Response(http.StatusOK, projectsResponse),
 			}.Server(),

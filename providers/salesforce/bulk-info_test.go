@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/amp-labs/connectors/common"
+	"github.com/amp-labs/connectors/test/utils/mockutils"
 	"github.com/amp-labs/connectors/test/utils/mockutils/mockcond"
 	"github.com/amp-labs/connectors/test/utils/mockutils/mockserver"
 	"github.com/amp-labs/connectors/test/utils/testroutines"
@@ -247,18 +248,18 @@ func TestGetBulkQueryResults(t *testing.T) { // nolint:dupl
 	}
 }
 
-func statusCodeComparator(serverURL string, actual, expected *http.Response) *testutils.CompareResult {
-	result := testutils.NewCompareResult()
+func statusCodeComparator(serverURL string, actual, expected *http.Response) *mockutils.CompareResult {
+	result := mockutils.NewCompareResult()
 
 	result.Assert("StatusCode", expected.StatusCode, actual.StatusCode)
 
 	return result
 }
 
-func testJobResultsComparator(serverURL string, actual, expected *JobResults) *testutils.CompareResult {
+func testJobResultsComparator(serverURL string, actual, expected *JobResults) *mockutils.CompareResult {
 	actual.JobInfo = nil // ignore JobInfo when comparing
 
-	result := testutils.NewCompareResult()
+	result := mockutils.NewCompareResult()
 
 	result.Assert("JobResults", expected, actual)
 
@@ -267,8 +268,8 @@ func testJobResultsComparator(serverURL string, actual, expected *JobResults) *t
 
 func testConciseJobInfoComparator(
 	serverURL string, actual *GetJobInfoResult, expected *GetJobInfoResult,
-) *testutils.CompareResult {
-	result := testutils.NewCompareResult()
+) *mockutils.CompareResult {
+	result := mockutils.NewCompareResult()
 
 	result.Assert("Id", expected.Id, actual.Id)
 	result.Assert("Object", expected.Object, actual.Object)

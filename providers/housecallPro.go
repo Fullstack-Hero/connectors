@@ -24,7 +24,7 @@ func init() {
 			},
 			Proxy:     true,
 			Read:      true,
-			Subscribe: true,
+			Subscribe: false,
 			Write:     true,
 		},
 		Media: &Media{

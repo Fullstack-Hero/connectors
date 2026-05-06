@@ -34,64 +34,48 @@ func main() {
 		return
 	}
 
-	if _, err := testRead(ctx, conn, "companies", []string{"id", "is_active", "name"}, 1000, ""); err != nil {
+	if err := testRead(ctx, conn, "companies", []string{"id", "is_active", "name"}, 1000); err != nil {
 		slog.Error(err.Error())
 	}
 
-	if _, err := testRead(ctx, conn, "submittal_statuses", []string{"id", "name", "status"}, 4, ""); err != nil {
+	if err := testRead(ctx, conn, "submittal_statuses", []string{"id", "name", "status"}, 4); err != nil {
 		slog.Error(err.Error())
 	}
 
-	if _, err := testRead(ctx, conn, "vendors", []string{"id", "name", "is_active"}, 1000, ""); err != nil {
-		slog.Error(err.Error())
-	}
-
-	res, err := testRead(ctx, conn, "checklist/list_templates", []string{"id", "name", "nupdated_atme"}, 2, "")
-	if err != nil {
-		slog.Error(err.Error())
-	}
-
-	if _, err := testRead(ctx, conn, "checklist/list_templates", []string{"id", "name", "updated_at"}, 2, res.NextPage.String()); err != nil {
+	if err := testRead(ctx, conn, "vendors", []string{"id", "name", "is_active"}, 1000); err != nil {
 		slog.Error(err.Error())
 	}
 
 }
 
-func testRead(ctx context.Context, conn *pd.Connector, objectName string, fields []string, pageSize int, nextpage string) (*common.ReadResult, error) {
+func testRead(ctx context.Context, conn *pd.Connector, objectName string, fields []string, pageSize int) error {
 	params := common.ReadParams{
 		ObjectName: objectName,
 		Fields:     connectors.Fields(fields...),
-		Since:      time.Now().AddDate(0, 0, -30), // 30 days ago
+		Since:      time.Now().AddDate(0, 0, -1), // 1 day ago
 		Until:      time.Now(),
 		PageSize:   pageSize,
-		NextPage:   common.NextPageToken(nextpage),
-	}
-
-	if nextpage == "" {
-		log.Printf("Testing read for object %s with fields %v\n", objectName, fields)
-	} else {
-		log.Printf("Testing read for object %s with fields %v on next page\n", objectName, fields)
 	}
 
 	res, err := conn.Read(ctx, params)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read %s: %w", objectName, err)
+		return fmt.Errorf("failed to read %s: %w", objectName, err)
 	}
 
 	jsonStr, err := json.MarshalIndent(res, "", "  ")
 	if err != nil {
-		return nil, fmt.Errorf("error marshalling JSON: %w", err)
+		return fmt.Errorf("error marshalling JSON: %w", err)
 	}
 
 	if _, err := os.Stdout.Write(jsonStr); err != nil {
-		return nil, fmt.Errorf("error writing to stdout: %w", err)
+		return fmt.Errorf("error writing to stdout: %w", err)
 	}
 
 	if _, err := os.Stdout.WriteString("\n"); err != nil {
-		return nil, fmt.Errorf("error writing to stdout: %w", err)
+		return fmt.Errorf("error writing to stdout: %w", err)
 	}
 
 	log.Printf("Successfully read %d records for object %s\n", len(res.Data), objectName)
 
-	return res, nil
+	return nil
 }

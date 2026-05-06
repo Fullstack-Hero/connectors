@@ -278,7 +278,6 @@ func extractFieldsFromArray(
 	}
 
 	fields, err = extractFields(objectName, propertyFlattener, items.Value)
-	statsObjectsWithAutoSelectedArrays.Add("", urlPath)
 
 	return fields, "", err
 }

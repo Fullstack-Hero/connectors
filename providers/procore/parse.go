@@ -9,31 +9,27 @@ import (
 	"github.com/spyzhov/ajson"
 )
 
-// nextPageFromLink returns a NextPageFunc that extracts the full next-page URL
-// from a Procore Link header via `Link: <...>; rel="next"`.
-//
-// We forward the entire URL (not just the page number) so that filter params
-// captured on the first request — most importantly `filters[updated_at]` — are
-// carried across pages. This keeps the time window stable and avoids
-// duplicates/misses that would occur if the connector recomputed the window
-// (e.g. defaulting `until` to time.Now()) for each page.
-//
+// nextPageFromLink returns a NextPageFunc that extracts the next page number
+// from a Procore Link header via `Link: <...page=N>; rel="next"`.
+// The returned token is the bare page number.
 // Example Link header: `<https://api.procore.com/rest/v1.0/companies/12345/objects?page=2&per_page=100>; rel="next",
 //
 //	<https://api.procore.com/rest/v1.0/companies/12345/objects?page=50&per_page=100>; rel="last"`
 //
 // Ref: https://developers.procore.com/reference/rest/docs/pagination
 func nextPageFromLink(linkHeader string) common.NextPageFunc {
-	next := nextPageURL(linkHeader)
+	next := nextPageNumber(linkHeader)
 
 	return func(*ajson.Node) (string, error) {
 		return next, nil
 	}
 }
 
-// nextPageURL returns the absolute URL for the rel="next" entry in a Procore
-// Link header, or an empty string when there is no next page.
-func nextPageURL(linkHeader string) string {
+// nextPageFromResponse returns a NextPageFunc that extracts the next page number
+// Example of Link header: `<https://api.procore.com/rest/v1.0/companies/12345/objects?page=2&per_page=100>; rel="next",
+// Example of paginated url: `https://api.procore.com/rest/v1.0/companies/12345/objects?page=2&per_page=100`
+func nextPageNumber(linkHeader string) string {
+	// If there is no Link header, we assume there are no more pages to fetch and return an empty token.
 	if linkHeader == "" {
 		return ""
 	}
@@ -50,13 +46,12 @@ func nextPageURL(linkHeader string) string {
 			continue
 		}
 
-		raw := part[start+1 : end]
-
-		if _, err := url.Parse(raw); err != nil {
+		parsed, err := url.Parse(part[start+1 : end])
+		if err != nil {
 			continue
 		}
 
-		return raw
+		return parsed.Query().Get("page")
 	}
 
 	return ""

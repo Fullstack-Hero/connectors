@@ -60,12 +60,8 @@ func init() {
 				DisplayName: "Gmail",
 				Support: Support{
 					Read:      true,
-					Subscribe: true,
+					Subscribe: false,
 					Write:     true,
-				},
-				SubscribeRequirements: &SubscribeRequirements{
-					Maintenance:    new(true),
-					SubscribeByAPI: new(true),
 				},
 			},
 		},
