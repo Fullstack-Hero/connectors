@@ -98,7 +98,7 @@ var providerConfigs = map[providers.Provider]ProviderConfigRegistry{
 			providers.ModuleSalesforceCRM: &salesforceConfig,
 		},
 	},
-	providers.SalesforceCustomDomain: {
+	providers.SalesforceCustomClientCredentials: {
 		Modules: map[common.ModuleID]*ProviderConfig{
 			providers.ModuleSalesforceCRM: &salesforceConfig,
 		},
@@ -122,16 +122,17 @@ var providerConfigs = map[providers.Provider]ProviderConfigRegistry{
 			providers.ModuleGoogleCalendar: &googleCalendarConfig,
 		},
 	},
-	providers.Hubspot:      {DefaultModuleConfig: &hubspotConfig},
-	providers.Gong:         {DefaultModuleConfig: &gongConfig},
-	providers.HousecallPro: {DefaultModuleConfig: &housecallproConfig},
-	providers.ConnectWise:  {DefaultModuleConfig: &connectWiseConfig},
-	providers.AccuLynx:     {DefaultModuleConfig: &acculynxConfig},
-	providers.Jobber:       {DefaultModuleConfig: &jobberConfig},
-	providers.Slack:        {DefaultModuleConfig: &slackConfig},
-	providers.Microsoft:    {DefaultModuleConfig: &microsoftConfig},
-	providers.Attio:        {DefaultModuleConfig: &attioConfig},
-	providers.Stripe:       {DefaultModuleConfig: &stripeConfig},
+	providers.Hubspot:        {DefaultModuleConfig: &hubspotConfig},
+	providers.Gong:           {DefaultModuleConfig: &gongConfig},
+	providers.HousecallPro:   {DefaultModuleConfig: &housecallproConfig},
+	providers.ConnectWise:    {DefaultModuleConfig: &connectWiseConfig},
+	providers.AccuLynx:       {DefaultModuleConfig: &acculynxConfig},
+	providers.Jobber:         {DefaultModuleConfig: &jobberConfig},
+	providers.Slack:          {DefaultModuleConfig: &slackConfig},
+	providers.SlackUserScope: {DefaultModuleConfig: &slackConfig},
+	providers.Microsoft:      {DefaultModuleConfig: &microsoftConfig},
+	providers.Attio:          {DefaultModuleConfig: &attioConfig},
+	providers.Stripe:         {DefaultModuleConfig: &stripeConfig},
 
 	// Subscribe-testing mock providers (see the mocksub package). Inert unless the mock
 	// provider is explicitly set up via providers.SetupMock*Provider() in a test.

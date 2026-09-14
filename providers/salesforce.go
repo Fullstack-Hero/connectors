@@ -11,7 +11,7 @@ const Salesforce Provider = "salesforce"
 // IsSalesforce reports whether the provider is part of the Salesforce family:
 // the base provider and its twins, which reuse the same connector
 // implementation, APIs and modules, and differ only in authentication scheme
-// (salesforceJWT) or in which hosts they address (salesforceCustomDomain).
+// (salesforceJWT) or in which hosts they address (salesforceCustomClientCredentials).
 //
 // Prefer this over comparing against Salesforce directly, so that behavior
 // gated on "this is Salesforce" reaches every twin. Where a twin is
@@ -23,7 +23,7 @@ const Salesforce Provider = "salesforce"
 func IsSalesforce(provider Provider) bool {
 	return provider == Salesforce ||
 		provider == SalesforceJWT ||
-		provider == SalesforceCustomDomain
+		provider == SalesforceCustomClientCredentials
 }
 
 const (
@@ -181,6 +181,7 @@ func init() { // nolint:funlen
 					DocsURL:     "https://help.salesforce.com/s/articleView?language=en_US&id=sf.faq_domain_name_what.htm&type=5",
 					// ModuleDependencies specifies which modules REQUIRE this metadata item.
 					// Here, it means: "the CRM module depends on/requires the workspace metadata".
+					Prompt: "The part of the Salesforce URL that comes before .my.salesforce.com or .lightning.force.com.",
 					ModuleDependencies: &ModuleDependencies{
 						ModuleSalesforceCRM:                   {},
 						ModuleSalesforceAccountEngagement:     {},
@@ -197,6 +198,27 @@ func init() { // nolint:funlen
 					Name: "businessUnitId",
 					Prompt: "Business Unit ID is the 18-character ID that starts with 0Uv, " +
 						"found in Business Unit Setup within Salesforce Setup or Marketing Setup.",
+				},
+			},
+			// PostAuthentication metadata is fetched from Salesforce right after a
+			// connection is created (via Connector.GetPostAuthInfo) and stored on the
+			// connection's provider metadata. The username powers the flow-based
+			// Subscribe path: it becomes the outbound message's integration user.
+			// The lookup is best-effort — tokens minted without an identity scope
+			// (id/openid/profile/full) cannot call the userinfo endpoint, and
+			// GetPostAuthInfo degrades to an empty result rather than failing the
+			// connection.
+			// The username comes from the UserInfo endpoint's preferred_username
+			// response parameter ("Username of the queried user"):
+			// https://help.salesforce.com/s/articleView?id=sf.remoteaccess_using_userinfo_endpoint.htm
+			// Scope requirements ("id — Allows access to the identity URL service"):
+			// https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_tokens_scopes.htm
+			PostAuthentication: []MetadataItemPostAuthentication{
+				{
+					Name: "username",
+					ModuleDependencies: &ModuleDependencies{
+						ModuleSalesforceCRM: {},
+					},
 				},
 			},
 		},

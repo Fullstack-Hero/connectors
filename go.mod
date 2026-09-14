@@ -1,43 +1,6 @@
 module github.com/amp-labs/connectors
 
-go 1.26.5
-
-require (
-	cloud.google.com/go/bigquery v1.82.0
-	github.com/PuerkitoBio/goquery v1.12.0
-	github.com/amp-labs/amp-common v0.0.0-20260903233810-1f726c8f0c8d
-	github.com/antchfx/xmlquery v1.5.1
-	github.com/apache/arrow/go/v15 v15.0.2
-	github.com/aws/aws-sdk-go-v2 v1.45.1
-	github.com/aws/aws-sdk-go-v2/config v1.33.0
-	github.com/aws/aws-sdk-go-v2/credentials v1.20.0
-	github.com/brianvoe/gofakeit/v6 v6.28.0
-	github.com/chromedp/chromedp v0.16.0
-	github.com/deiu/linkparser v0.0.0-20170608193052-9b6849e15168
-	github.com/gertd/go-pluralize v0.2.1
-	github.com/getkin/kin-openapi v0.148.0
-	github.com/go-playground/validator v9.31.0+incompatible
-	github.com/go-test/deep v1.1.1
-	github.com/gobwas/glob v0.2.3
-	github.com/golang-jwt/jwt/v5 v5.3.1
-	github.com/google/go-cmp v0.7.0
-	github.com/google/uuid v1.6.0
-	github.com/iancoleman/strcase v0.3.0
-	github.com/invopop/jsonschema v0.14.0
-	github.com/invopop/yaml v0.3.1
-	github.com/kaptinlin/jsonschema v0.9.8
-	github.com/mitchellh/hashstructure v1.1.0
-	github.com/mitchellh/mapstructure v1.5.0
-	github.com/spyzhov/ajson v0.9.6
-	github.com/stretchr/testify v1.12.1
-	gitlab.com/c0b/go-ordered-json v0.0.0-20201030195603-febf46534d5a
-	go.uber.org/atomic v1.11.0
-	golang.org/x/net v0.58.0
-	golang.org/x/oauth2 v0.36.0
-	golang.org/x/text v0.41.0
-	google.golang.org/api v0.294.0
-	google.golang.org/grpc v1.83.2
-)
+go 1.27.1
 
 require (
 	cloud.google.com/go v0.123.0 // indirect
@@ -45,19 +8,19 @@ require (
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/iam v1.12.0 // indirect
-	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/andybalholm/cascadia v1.3.4 // indirect
 	github.com/antchfx/xpath v1.3.6 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.19.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.8.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.5.0 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.19.2 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.2 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.8.2 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.5.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.19 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/signin v1.7.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.35.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.40.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.47.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/signin v1.9.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.37.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.42.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.49.0 // indirect
 	github.com/aws/smithy-go v1.28.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.2 // indirect
@@ -85,7 +48,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.24.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/kaptinlin/jsonpointer v0.4.28 // indirect
-	github.com/klauspost/compress v1.19.2 // indirect
+	github.com/klauspost/compress v1.20.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/neilotoole/slogt v1.1.0 // indirect
@@ -98,11 +61,11 @@ require (
 	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/zeebo/xxh3 v1.1.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/contrib/bridges/otelslog v0.20.0 // indirect
+	go.opentelemetry.io/contrib/bridges/otelslog v0.20.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.67.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0 // indirect
 	go.opentelemetry.io/otel v1.46.0 // indirect
-	go.opentelemetry.io/otel/log v0.21.0 // indirect
+	go.opentelemetry.io/otel/log v0.22.0 // indirect
 	go.opentelemetry.io/otel/metric v1.46.0 // indirect
 	go.opentelemetry.io/otel/trace v1.46.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
@@ -117,13 +80,47 @@ require (
 	golang.org/x/tools v0.48.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto v0.0.0-20260715232425-e75dac1f907d // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260819154853-08b0e4226688 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
 
 require (
+	cloud.google.com/go/bigquery v1.83.0
+	github.com/PuerkitoBio/goquery v1.13.0
+	github.com/amp-labs/amp-common v0.0.0-20260908201524-747c72091278
+	github.com/antchfx/xmlquery v1.5.1
+	github.com/apache/arrow/go/v15 v15.0.2
+	github.com/aws/aws-sdk-go-v2 v1.46.0
+	github.com/aws/aws-sdk-go-v2/config v1.33.3
+	github.com/aws/aws-sdk-go-v2/credentials v1.20.3
+	github.com/brianvoe/gofakeit/v6 v6.28.0
+	github.com/chromedp/chromedp v0.16.0
+	github.com/deiu/linkparser v0.0.0-20170608193052-9b6849e15168
+	github.com/gertd/go-pluralize v0.2.1
+	github.com/getkin/kin-openapi v0.149.0
+	github.com/go-playground/validator v9.31.0+incompatible
+	github.com/go-test/deep v1.1.1
+	github.com/gobwas/glob v1.0.0
+	github.com/golang-jwt/jwt/v5 v5.3.1
+	github.com/google/go-cmp v0.7.0
+	github.com/google/uuid v1.6.0
+	github.com/iancoleman/strcase v0.3.0
+	github.com/invopop/jsonschema v0.14.0
+	github.com/invopop/yaml v0.3.1
+	github.com/kaptinlin/jsonschema v0.9.9
+	github.com/mitchellh/hashstructure v1.1.0
+	github.com/mitchellh/mapstructure v1.5.0
+	github.com/spyzhov/ajson v0.9.6
+	github.com/stretchr/testify v1.12.1
+	gitlab.com/c0b/go-ordered-json v0.0.0-20201030195603-febf46534d5a
+	go.uber.org/atomic v1.11.0
+	golang.org/x/net v0.58.0
+	golang.org/x/oauth2 v0.37.0
+	golang.org/x/text v0.41.0
+	google.golang.org/api v0.297.0
+	google.golang.org/grpc v1.83.2
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.2
 )
